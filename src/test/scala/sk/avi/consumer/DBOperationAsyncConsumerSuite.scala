@@ -56,6 +56,14 @@ class DBOperationAsyncConsumerSuite extends FunSuite with BeforeAndAfter {
     }
   }
 
+
+  test("poisoning empty queue") {
+    consumer.start()
+    consumer.shutdown()
+    consumer.join()
+    assert(processedQueue.toList == Nil)
+  }
+
   test("exactly-once processing - number of success add operation equals to number of processed") {
     val expectedAddedCount = runMassiveQueueInsert(threadCount = 50)
     val actualAddedCount = processedQueue.size

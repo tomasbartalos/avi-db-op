@@ -44,10 +44,9 @@ class ExactlyOnceLockingStrategySuite extends FunSuite {
     val readActiveCount = new AtomicInteger()
     val readCountByThread = new ConcurrentHashMap[String, Integer]()
 
-    val readThreads = (1 to 5).map(_ => new Thread(() => {
+    val readThreads = (1 to 10).map(_ => new Thread(() => {
       lock {
         val activeCount = readActiveCount.incrementAndGet()
-        Thread.sleep(1000)
         readCountByThread.put(Thread.currentThread().toString, activeCount)
         Thread.sleep(3000)
         readActiveCount.decrementAndGet()
